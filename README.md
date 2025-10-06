@@ -38,7 +38,7 @@ Antes de tudo, você precisa ter o **Git** instalado no seu computador.
 3.  Execute o comando abaixo (copie a URL do botão verde "<> Code" no topo desta página):
 
 ```bash
-git clone [URL_DO_REPOSITORIO_AQUI]
+git clone https://github.com/hlgboot/tp_pdsII/
 ```
 
 Pronto! Agora você tem uma pasta com o nome do projeto no seu computador.
@@ -53,8 +53,7 @@ Antes de começar a codificar, sempre puxe as últimas atualizações que algué
 
 ```bash
 # Entre na pasta do projeto
-cd [NOME-DO-SEU-REPOSITORIO]
-
+cd tp_pdsII
 # Puxe as atualizações da branch principal (geralmente 'main' ou 'master')
 git pull origin main
 ```
