@@ -11,6 +11,7 @@ Este é o repositório oficial para o desenvolvimento do Trabalho de Conclusão 
 * Matheus Henriques
 * Pedro Costa
 * Gabriel Sette
+* Mayara Guedes Leão
 
 ---
 
