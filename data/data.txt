@@ -1,0 +1,1 @@
+-> Neste diretorio ficaram os arquivos .txt de cada instancia e o arquivo com o resultado da comparacao da nossa aplicação
