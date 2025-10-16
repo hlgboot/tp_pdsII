@@ -10,7 +10,7 @@ public:
     // Método virtual puro que define a interface para resolver o problema
     virtual ResultadoUnitario resolver(int capacidade, const std::vector<Ativo>& ativos) = 0;
     
-    // Destrutor virtual é essencial para classes base com funções virtuais
+    // Destrutor virtual
     virtual ~Algoritmo() = default;
 };
 
