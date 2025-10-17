@@ -1,0 +1,11 @@
+# Arquivos de compilação e executaveis
+build/*
+!build/.gitkeep
+
+bin/
+
+# Arquivos de resultado gerados
+results/
+
+# Arquivos de instâncias .txt gerados na pasta data
+data/*.txt
