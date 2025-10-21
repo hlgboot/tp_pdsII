@@ -10,7 +10,7 @@ Para simplificar e modelar o problema computacionalmente, o grupo fará uma anal
 
 * Cada ativo representa um item;
 * O custo do investimento em cada ativo representa o peso;
-* O retorno esperado do ativo representa o benefício;
+* O benefício de cada item será o Índice de Sharpe do ativo (calculado previamente com base em seu retorno esperado e risco, representando o retorno ajustado ao risco);
 * E o capital total disponível para investir representa a capacidade máxima da mochila.
 
 Assim, o objetivo é determinar quais ativos devem compor o portfólio de forma que o retorno total seja maximizado sem ultrapassar o orçamento disponível.
