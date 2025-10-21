@@ -22,6 +22,26 @@ namespace Utils {
      */
     double calcularProximidade(int valor_obtido, int valor_otimo);
 
+    /**
+     * @brief Calcula o Índice de Sharpe para um ativo.
+     * @param retorno_esperado A taxa de retorno esperada do ativo (ex: 0.15).
+     * @param volatilidade O risco (desvio padrão) do ativo.
+     * @param taxa_livre_risco A taxa de retorno de um investimento sem risco.
+     * @return O Índice de Sharpe calculado. Retorna 0.0 se a volatilidade for zero.
+     */
+    double calcularIndiceSharpe(
+        double retorno_esperado, 
+        double volatilidade, 
+        double taxa_livre_risco
+    );
+
+    /**
+     * @brief Extrai o ID numérico de um nome de arquivo de instância.
+     * @param nomeArquivo O caminho do arquivo (ex: "data/instancia_05.txt").
+     * @return O ID numérico (ex: 5). Retorna -1 se não conseguir extrair.
+     */
+    int extrairIdDoNomeArquivo(const std::string& nomeArquivo);
+
 } // namespace Utils
 
 #endif // UTILS_H

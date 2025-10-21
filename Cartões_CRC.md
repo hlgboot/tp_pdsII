@@ -18,6 +18,7 @@ Este documento descreve a arquitetura do sistema usando a metodologia de Cartõe
 | - Gerar a lista de nomes de arquivos de instância. | (Nenhum) |
 | - Calcular a proximidade do ótimo (%). | |
 | - Calcular o Índice de Sharpe a partir do retorno, volatilidade e taxa livre de risco. | |
+| - Extrair o ID da instância do nome do arquivo. | |
 
 | Classe: **`Algoritmo`** (Interface Abstrata) | |
 | :--- | :--- |
