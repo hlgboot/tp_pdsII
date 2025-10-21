@@ -13,6 +13,9 @@ public:
         const std::string& arquivoEntrada,
         const std::string& diretorioSaida
     );
+private:
+    // Membro de estado privado para rastrear o ID
+    int _proximoId = 1;
 };
 
 #endif // GERADOR_INSTANCIAS_H
