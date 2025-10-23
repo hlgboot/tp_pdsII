@@ -1,8 +1,8 @@
-#include "utils/Utils.h" // Inclui o cabeçalho correspondente
-#include <stdexcept>      // Para std::invalid_argument (em std::stoi)
-#include <sstream>        // Para std::ostringstream (formatação de strings)
-#include <iomanip>        // Para std::setw e std::setfill (zeros à esquerda)
-#include <string>         // Para std::string e std::stoi
+#include "utils/Utils.hpp" // Inclui o cabeçalho correspondente
+#include <stdexcept>       // Para std::invalid_argument (em std::stoi)
+#include <sstream>         // Para std::ostringstream (formatação de strings)
+#include <iomanip>         // Para std::setw e std::setfill (zeros à esquerda)
+#include <string>          // Para std::string e std::stoi
 
 namespace Utils {
 

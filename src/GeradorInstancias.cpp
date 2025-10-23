@@ -1,29 +1,31 @@
 // --- Includes Necessários ---
-#include "../../include/app/GeradorInstancias.hpp" // Define a classe GeradorInstancias
-#include "../../include/utils/Utils.hpp"          // Para calcular Sharpe e nomes de arquivo
-#include "../../include/core/Ativo.hpp"           // Define a struct Ativo
+#include "managers/GeradorInstancias.hpp" // Define a classe
+#include "utils/Utils.hpp"                // Para Utils::calcularIndiceSharpe
+#include "core/Ativo.hpp"                 // Define a struct Ativo
 
 #include <fstream>   // Para ler e escrever arquivos (ifstream, ofstream)
-#include <vector>    // Para usar listas (vetores)
-#include <string>    // Para usar texto (strings)
-#include <random>    // Para gerar números aleatórios (melhor que rand())
-#include <numeric>   // Para somar pesos (std::accumulate)
-#include <cmath>     // Para std::max (pegar o maior valor)
-#include <iostream>  // Para mostrar mensagens (cout) e erros (cerr)
-#include <filesystem>// Para criar e verificar pastas/diretórios (precisa de C++17)
+#include <vector>    // Para std::vector
+#include <string>    // Para std::string
+#include <random>    // Para std::random_device, std::mt19937, etc.
+#include <algorithm> // Para std::shuffle
+#include <numeric>   // Para std::accumulate (embora estejamos somando em loop)
+#include <cmath>     // Para std::max
+#include <iostream>  // Para std::cout e std::cerr
+#include <sstream>   // Para std::ostringstream (formatar nomes de arquivos)
+#include <iomanip>   // Para std::setw e std::setfill (zeros à esquerda)
+#include <stdexcept> // Para std::runtime_error
 
-// --- Função Auxiliar ---
-// Fica escondida aqui dentro, só esse arquivo .cpp consegue usar ela.
-// Lê nomes de um arquivo, um por linha.
-namespace { // (Namespace anônimo ainda é útil para esconder esta função)
+// --- Função Auxiliar para ler o arquivo ativos.csv ---
+namespace {
     std::vector<std::string> lerNomesDeAtivos(const std::string& caminhoArquivo) {
-        std::vector<std::string> nomes;
-        std::ifstream arquivo(caminhoArquivo); // Tenta abrir o arquivo para leitura
+        std::ifstream arquivo(caminhoArquivo);
 
+        // CHECAGEM FATAL: Se não puder ler os nomes, o programa não pode continuar.
         if (!arquivo.is_open()) {
-            std::cerr << "Erro Crítico: Não foi possível abrir o arquivo de nomes: " << caminhoArquivo << std::endl;
-            return nomes; // Retorna lista vazia para indicar erro
+            throw std::runtime_error("Erro Crítico: Não foi possível abrir o arquivo de nomes: " + caminhoArquivo);
         }
+
+        std::vector<std::string> nomes;
         std::string linha;
         while (std::getline(arquivo, linha)) {
             if (!linha.empty()) {
@@ -31,84 +33,108 @@ namespace { // (Namespace anônimo ainda é útil para esconder esta função)
             }
         }
         arquivo.close();
+
+        // CHECAGEM FATAL: Se o vetor estiver vazio, o arquivo está vazio e o programa não pode continuar.
+        if (nomes.empty()) {
+            throw std::runtime_error("Erro Crítico: Arquivo de nomes de ativos está vazio: " + caminhoArquivo);
+        }
+
         return nomes;
     }
-} // Fim do namespace anônimo
+}
 
-// --- Implementação da Função Principal da Classe ---
+// --- Implementação da função gerarEsalvar ---
 void GeradorInstancias::gerarEsalvar(
     int numeroDeInstancias,
     int itensPorInstancia,
-    const std::string& arquivoNomes, // Arquivo .txt com um nome de ativo por linha
-    const std::string& diretorioSaida // Espera-se que seja "data" ou "data/"
+    const std::string& arquivoNomes,
+    const std::string& diretorioSaida
 ) {
-    // --- 1. Checagens Iniciais (Programação Defensiva) ---
+    // --- 1. Checagens Iniciais ---
     if (numeroDeInstancias <= 0 || itensPorInstancia <= 0) {
-        std::cerr << "Erro: Número de instâncias e itens devem ser positivos.\n";
+        std::cerr << "Aviso: Número de instâncias e itens devem ser positivos. Geração pulada.\n";
         return;
     }
     if (diretorioSaida.empty()) {
-        std::cerr << "Erro: Diretório de saída não pode ser vazio.\n";
+        std::cerr << "Aviso: Diretório de saída não pode ser vazio. Geração pulada.\n";
         return;
     }
-     if (arquivoNomes.empty()) {
-         std::cerr << "Erro: Nome do arquivo de nomes de ativos não pode ser vazio.\n";
+    if (arquivoNomes.empty()) {
+        std::cerr << "Aviso: Nome do arquivo de nomes de ativos não pode ser vazio. Geração pulada.\n";
         return;
     }
 
-    // Lê a lista de nomes que será usada para os ativos
+    // --- 2. Leitura dos Nomes Base ---
     std::vector<std::string> nomes_base = lerNomesDeAtivos(arquivoNomes);
-    if (nomes_base.empty()) {
-        std::cerr << "Erro: Falha ao ler nomes de ativos do arquivo. Abortando geração.\n";
-        return;
-    }
-
+    
     // --- 3. Preparação do Gerador Aleatório ---
     std::random_device rd;
     std::mt19937 gerador(rd());
 
-    // Intervalos para gerar valores aleatórios
-    std::uniform_int_distribution<> dist_peso(10, 1000);
-    std::uniform_real_distribution<> dist_retorno(0.01, 0.35);
-    std::uniform_real_distribution<> dist_volatilidade(0.05, 0.6);
-    std::uniform_int_distribution<> dist_nomes(0, nomes_base.size() - 1);
+    std::uniform_int_distribution<> dist_preco(50, 500);
+    std::uniform_real_distribution<> dist_retorno(0.05, 0.30);
+    std::uniform_real_distribution<> dist_volat(0.1, 1.0);
 
     const double TAXA_LIVRE_RISCO = 0.05; // 5%
     const double FATOR_CAPACIDADE = 0.5; // 50%
 
-    // Pega a lista de nomes de arquivos formatados que vamos criar
-    std::vector<std::string> nomesArquivosSaida = Utils::gerarNomesArquivosInstancias(numeroDeInstancias, diretorioSaida);
-
-    std::cout << "Iniciando geração de " << numeroDeInstancias << " instâncias em '" << diretorioSaida << "'...\n";
+    std::cout << "Iniciando geração de " << numeroDeInstancias 
+              << " instâncias com " << itensPorInstancia << " itens cada...\n";
 
     // --- 4. Loop Principal (Para cada instância) ---
+
+    // Cria um vetor de índices (0, 1, 2, ..., n-1)
+    std::vector<int> indices(nomes_base.size());
+    std::iota(indices.begin(), indices.end(), 0); // Preenche o vetor com 0, 1, 2, 3...
+
     for (int i = 0; i < numeroDeInstancias; ++i) {
 
-        long long soma_pesos_total = 0;
-        std::vector<core::Ativo> ativos_da_instancia;
+        long long soma_precos_total = 0;
+        std::vector<Ativo> ativos_da_instancia;
         ativos_da_instancia.reserve(itensPorInstancia);
 
-        // --- 5. Loop Interno (Para cada ativo da instância) ---
-        for (int j = 0; j < itensPorInstancia; ++j) {
-            std::string nome_ativo = nomes_base[dist_nomes(gerador)];
-            int peso = dist_peso(gerador);
-            double retorno_esperado = dist_retorno(gerador);
-            double volatilidade = dist_volatilidade(gerador);
+// --- 5. EMBARALHA OS ÍNDICES ---
+        // Embaralha a lista de índices para esta instância
+        std::shuffle(indices.begin(), indices.end(), gerador);
+        
+        long long soma_precos_total = 0;
+        std::vector<Ativo> ativos_da_instancia;
+        ativos_da_instancia.reserve(itensPorInstancia);
 
-            // Calcula o benefício (Sharpe)
+        // --- 6. Loop Interno (Para cada ativo da instância) ---
+        // Agora, este loop vai de 'j' de 0 até 'itensPorInstancia'
+        // e pega os 'j' primeiros índices da lista embaralhada.
+        for (int j = 0; j < itensPorInstancia; ++j) {
+            
+            // Pega o índice embaralhado, garantindo que é único
+            int indice_ativo_unico = indices[j]; 
+            
+            std::string nome_ativo = nomes_base[indice_ativo_unico]; // <-- Garante nome único
+            
+            int preco = dist_preco(gerador);
+            double retorno_esperado = dist_retorno(gerador);
+            double volatilidade = dist_volat(gerador);
+
             double sharpe = Utils::calcularIndiceSharpe(retorno_esperado, volatilidade, TAXA_LIVRE_RISCO);
             int beneficio = std::max(1, static_cast<int>(sharpe * 1000.0));
 
-            soma_pesos_total += peso;
-            // Adiciona o ativo na lista da instância
-            ativos_da_instancia.push_back({nome_ativo, beneficio, peso});
+            soma_precos_total += preco;
+            ativos_da_instancia.push_back({nome_ativo, beneficio, preco});
         }
 
         // --- 6. Calcula a capacidade da mochila ---
-        int capacidade_mochila = static_cast<int>(soma_pesos_total * FATOR_CAPACIDADE);
+        int capacidade_mochila = static_cast<int>(soma_precos_total * FATOR_CAPACIDADE);
 
-        // --- 7. Escreve no Arquivo .txt ---
-        std::string nomeArquivoAtual = nomesArquivosSaida[i];
+        // --- 7. Gera o Nome do Arquivo usando o Contador Interno ---
+        int id_atual = _proximoId;
+        _proximoId++;
+
+        std::ostringstream oss;
+        oss << diretorioSaida << "instancia_" 
+            << std::setw(2) << std::setfill('0') << id_atual << ".txt";
+        std::string nomeArquivoAtual = oss.str();
+        
+        // --- 8. Escreve no Arquivo .txt ---
         std::ofstream arquivo_saida(nomeArquivoAtual);
 
         if (!arquivo_saida.is_open()) {
@@ -116,25 +142,17 @@ void GeradorInstancias::gerarEsalvar(
             continue;
         }
 
-        // Linha 1: Numero de Itens e Capacidade
         arquivo_saida << itensPorInstancia << " " << capacidade_mochila << "\n";
-
-        // Linhas seguintes: Nome, Benefício e Peso de cada ativo
         for (const auto& ativo : ativos_da_instancia) {
-             // Usa ativo.beneficio e ativo.peso
-            arquivo_saida << ativo.nome << " " << ativo.beneficio << " " << ativo.peso << "\n";
+            arquivo_saida << ativo.nome << " " << ativo.valor << " " << ativo.peso << "\n";
         }
-
         arquivo_saida.close();
 
+        // Checagem de segurança pós-escrita (do código do colega)
         if(arquivo_saida.fail()){
             std::cerr << "Aviso: Erro ao finalizar escrita no arquivo '" << nomeArquivoAtual << "'.\n";
         } else {
-             std::cout << " -> Instância '" << nomeArquivoAtual << "' gerada.\n";
+            std::cout << " -> Instância '" << nomeArquivoAtual << "' gerada.\n";
         }
-    } // Fim do loop principal
-
-    std::cout << "Geração de instâncias concluída.\n";
-} // Fim da função gerarEsalvar
-
-//
+    }
+}
