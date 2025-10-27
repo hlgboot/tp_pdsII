@@ -1,1 +1,1 @@
-#include "ForcaBruta.hpp"
+#include "algorithms/ForcaBruta.hpp"
