@@ -61,7 +61,7 @@ void GeradorInstancias::gerarEsalvar(
     std::mt19937 gerador(rd());
 
     std::uniform_int_distribution<> dist_preco(50, 500);
-    std::uniform_real_distribution<> dist_retorno(0.05, 0.30);
+    std::uniform_real_distribution<> dist_retorno(0.05, 0.90);
     std::uniform_real_distribution<> dist_volat(0.1, 1.0);
 
     const double TAXA_LIVRE_RISCO = 0.05; // 5%
@@ -128,7 +128,7 @@ void GeradorInstancias::gerarEsalvar(
         }
         arquivo_saida.close();
 
-        // Checagem de segurança pós-escrita
+        // Checagem de segurança pós-escrita para conferir se o arquivo foi escrito corretamente
         if (arquivo_saida.fail()) {
             std::cerr << "Aviso: Erro ao finalizar escrita no arquivo '" << nomeArquivoAtual << "'.\n";
         } else {

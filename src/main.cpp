@@ -1,49 +1,84 @@
 #include <iostream>
 #include <vector>
+#include <string>
+#include <stdexcept> // Para std::exception
 
-// Import dos managers
 #include "managers/MainController.hpp"
 #include "managers/GeradorInstancias.hpp"
-
-// Import das utils
 #include "utils/Utils.hpp"
-
-// Import dos algoritmos
 #include "algorithms/ForcaBruta.hpp"
 #include "algorithms/Aleatorio.hpp"
 #include "algorithms/GulosoBeneficio.hpp"
 #include "algorithms/GulosoRazao.hpp"
 
 int main() {
-    const int NUM_INSTANCIAS = 50;
-    const std::string DIR_INSTANCIAS = "data/";
+    const int NUM_INSTANCIAS_PEQUENAS = 25;
+    const int ITENS_POR_INSTANCIA_PEQUENA = 20; // Limite para rodar Força Bruta
 
-    // 1. Gerar os arquivos de instância (se necessário)
-    GeradorInstancias gerador;
-    gerador.gerarEsalvar(NUM_INSTANCIAS, 10, "data/ativos.csv", DIR_INSTANCIAS);
-    std::cout << "Instâncias geradas com sucesso!" << std::endl;
+    const int NUM_INSTANCIAS_GRANDES = 25;
+    const int ITENS_POR_INSTANCIA_GRANDE = 100; // Teste de performance
 
-    // 2. Criar os algoritmos
-    ForcaBruta          fb;
-    Aleatorio           al;
-    GulosoBeneficio     gb;
-    GulosoRazao         gr;
+    const int TOTAL_INSTANCIAS = NUM_INSTANCIAS_PEQUENAS + NUM_INSTANCIAS_GRANDES;
 
-    std::vector<Algoritmo*> algoritmos = {&fb, &al, &gb, &gr};
+    const std::string DIR_DADOS = "data/";
+    const std::string DIR_RESULTADOS = "results/";
+    const std::string ARQUIVO_NOMES_BASE = "ativos.csv"; // Arquivo que o Gerador lê
+    const std::string ARQUIVO_RELATORIO = "relatorio_final.csv";
 
-    // 3. Criar o controlador principal
-    MainController controlador(algoritmos);
+    try {
+        GeradorInstancias gerador;
 
-    // 4. Gerar a lista de arquivos a serem processados
-    std::vector<std::string> arquivos = Utils::gerarNomesArquivosInstancias(NUM_INSTANCIAS, DIR_INSTANCIAS);
+        // Gera as 25 instâncias pequenas
+        std::cout << "Gerando " << NUM_INSTANCIAS_PEQUENAS << " instancias pequenas..." << std::endl;
+        gerador.gerarEsalvar(
+            NUM_INSTANCIAS_PEQUENAS, 
+            ITENS_POR_INSTANCIA_PEQUENA,
+            DIR_DADOS + ARQUIVO_NOMES_BASE,
+            DIR_DADOS
+        );
 
-    // 5. Executar a análise
-    controlador.executar(arquivos);
-    std::cout << "Análise concluída!" << std::endl;
+        // Gera as 25 instâncias grandes
+        std::cout << "Gerando " << NUM_INSTANCIAS_GRANDES << " instancias grandes..." << std::endl;
+        gerador.gerarEsalvar(
+            NUM_INSTANCIAS_GRANDES, 
+            ITENS_POR_INSTANCIA_GRANDE,
+            DIR_DADOS + ARQUIVO_NOMES_BASE,
+            DIR_DADOS
+        );
+        std::cout << "Geracao de instancias concluida!" << std::endl;
 
-    // 6. Gerar o relatório final
-    controlador.gerarRelatorioCSV("results/relatorio.csv");
-    std::cout << "Relatório salvo em results/relatorio.csv" << std::endl;
 
-    return 0;
+        // Criação dos Algoritmos a serem usados
+        ForcaBruta      fb;
+        Aleatorio       al;
+        GulosoBeneficio gb;
+        GulosoRazao     gr;
+
+        std::vector<Algoritmo*> algoritmos = {&fb, &al, &gb, &gr};
+
+        // Criação do Controlador Principal 
+        MainController controlador(algoritmos);
+
+        // Geração da Lista de Arquivos 
+        // Gera a lista completa: "instancia_01.txt" até "instancia_50.txt"
+        std::vector<std::string> arquivos_para_processar = 
+            Utils::gerarNomesArquivosInstancias(TOTAL_INSTANCIAS, DIR_DADOS);
+
+        // Execução da Análise 
+        std::cout << "\nIniciando analise de " << TOTAL_INSTANCIAS << " instancias..." << std::endl;
+        controlador.executar(arquivos_para_processar);
+        std::cout << "Analise concluida!" << std::endl;
+
+        // Geração do Relatório Final
+        const std::string caminho_saida_relatorio = DIR_RESULTADOS + ARQUIVO_RELATORIO;
+        controlador.gerarRelatorioCSV(caminho_saida_relatorio);
+        std::cout << "Relatorio salvo com sucesso em '" << caminho_saida_relatorio << "'!" << std::endl;
+
+    } catch (const std::exception& e) {
+        std::cerr << "\nERRO FATAL: A execucao foi interrompida.\n";
+        std::cerr << "Motivo: " << e.what() << std::endl;
+        return 1; 
+    }
+
+    return 0; 
 }

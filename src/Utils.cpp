@@ -16,7 +16,7 @@ namespace Utils {
             return nomes;
         }
 
-        nomes.reserve(numeroDeInstancias); // Otimização de performance
+        nomes.reserve(numeroDeInstancias); // Otimização de performance - Reserva memória
 
         // Garante que 50 instâncias sejam formatadas como "01" e 100 como "001"
         int width = std::to_string(numeroDeInstancias).length();
@@ -59,7 +59,7 @@ namespace Utils {
         if (valor_otimo == 0) {
             // Se o ótimo é 0 e o obtido também é 0, a solução é 100% precisa.
             return (valor_obtido == 0) ? 100.0 : 0.0;
-        }
+        } 
 
         // Força a divisão de ponto flutuante
         return (static_cast<double>(valor_obtido) / valor_otimo) * 100.0;
