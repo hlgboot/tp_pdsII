@@ -9,10 +9,10 @@ using core::ResultadoUnitario;
 
 // Função para encontrar a melhor combinação de ativos usando recursão, onde testamos todas as combinações possíveis de ativos.
 
-// Pense nesta função como um clone[0] que está olhando para um ativo (ex: Ativo A).
-// Ele tem duas tarefas (Decisões A e B):
-// 1. (Decisão A) Criar um clone[1] para explorar TODOS os caminhos IGNORANDO o Ativo A.
-// 2. (Decisão B) Criar um clone[2] para explorar TODOS os caminhos PEGANDO o Ativo A (se couber).
+// Pense nesta função como um clone[0], que é o primeiro nó de uma grande árvore de decisões, e que está olhando para um ativo (ex: Ativo A).
+// Ele tem duas tarefas (Decisões A e B), que criam os dois "galhos" que saem deste nó:
+// 1. (Decisão A) Criar um clone[1] para explorar TODA a sub-árvore de caminhos IGNORANDO o Ativo A.
+// 2. (Decisão B) Criar um clone[2] para explorar TODA a sub-árvore de caminhos PEGANDO o Ativo A (se couber).
 // O clone[0] espera os clones[1] e [2] (e todos os filhos deles) terminarem seu trabalho e "morrerem" (retornarem). Só então o clone[0] morre também.
 void encontrarMelhorCombinacao(
     int indice_atual, 
