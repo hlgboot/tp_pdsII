@@ -1,11 +1,9 @@
-#include "include/algorithms/ForcaBruta.hpp" 
-#include "include/core/Ativo.hpp"           
-#include "include/core/ResultadoUnitario.hpp" 
+#include "algorithms/ForcaBruta.hpp" 
+#include "core/Ativo.hpp"           
+#include "core/ResultadoUnitario.hpp" 
+
 #include <vector>                                  
 #include <iostream>                                
-
-using core::Ativo;
-using core::ResultadoUnitario;
 
 // Função para encontrar a melhor combinação de ativos usando recursão, onde testamos todas as combinações possíveis de ativos.
 
