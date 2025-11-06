@@ -24,7 +24,7 @@ void encontrarMelhorCombinacao(
 
     // Toda vez que a função recursiva é chamada, verificamos se chegamos ao fim da lista de ativos.
     // Condiação de parada da função: Checa se todos os ativos foram considerados.
-    if (indice_atual == todos_ativos.size()) { // Quando chegamos aqui, significa que um caminho foi completamente explorado.
+    if (indice_atual == static_cast<int>(todos_ativos.size())) { // Quando chegamos aqui, significa que um caminho foi completamente explorado.
 
         // Compara o beneficio_atual da mochila que foi montada (mochila_temporaria) com o benefício da melhor mochila já encontrada (melhor_resultado_geral).
         if (beneficio_atual > melhor_resultado_geral.valor_total) { // Se o benefício atual for melhor, atualiza a melhor solução encontrada.
