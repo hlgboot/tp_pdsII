@@ -13,7 +13,7 @@
 
 // Define o número máximo de itens para o qual a Força Bruta será executada.
 // 20-22 é um limite seguro. Acima de 25 vai levar muito tempo.
-const int LIMITE_ITENS_FORCA_BRUTA = 20;
+const int LIMITE_ITENS_FORCA_BRUTA = 24;
 
 /**
  * @brief Construtor: Apenas armazena a lista de algoritmos.

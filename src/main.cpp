@@ -13,7 +13,7 @@
 
 int main() {
     const int NUM_INSTANCIAS_PEQUENAS = 25;
-    const int ITENS_POR_INSTANCIA_PEQUENA = 20; // Limite para rodar Força Bruta
+    const int ITENS_POR_INSTANCIA_PEQUENA = 24; // Limite para rodar Força Bruta
 
     const int NUM_INSTANCIAS_GRANDES = 25;
     const int ITENS_POR_INSTANCIA_GRANDE = 100; // Teste de performance
