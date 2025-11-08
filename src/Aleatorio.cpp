@@ -6,18 +6,17 @@
 #include <random>
 #include <iostream>
 
-/**
- * Resolve o Problema da Mochila usando um algoritmo ALEATÓRIO.
- * 
- * O algoritmo gera várias combinações aleatórias de ativos
- * (sem ultrapassar a capacidade) e guarda o melhor resultado encontrado.
- * 
- * Como o nome sugere, o processo é puramente aleatório — não há garantia
- * de encontrar a solução ótima, mas pode gerar boas soluções em pouco tempo.
- */
+//Resolve o Problema da Mochila usando um algoritmo ALEATÓRIO.
+ 
+// O algoritmo gera várias combinações aleatórias de ativos (sem ultrapassar a capacidade)
+// e guarda o melhor resultado encontrado, ou seja, 
+//com maior valor total e respeitando a capacidade máxima da mochila.
+// O processo é puramente aleatório — não há garantia de encontrar a 
+//solução ótima, mas pode gerar boas soluções em pouco tempo.
+
 ResultadoUnitario Aleatorio::resolver(int capacidade, const std::vector<Ativo>& ativos) {
 
-    // 1. Cria o objeto que guardará o melhor resultado encontrado
+    // 1. Cria o objeto que guardará o melhor resultado encontrado e o valor total inicial e peso total inicial iniciam em zero.
     ResultadoUnitario melhor_resultado;
     melhor_resultado.nome_algoritmo = "Aleatório";
     melhor_resultado.valor_total = 0;
@@ -25,36 +24,38 @@ ResultadoUnitario Aleatorio::resolver(int capacidade, const std::vector<Ativo>& 
 
     // 2. Cria o gerador de números aleatórios
     std::random_device rd;      // Usa o hardware para gerar uma semente aleatória
-    std::mt19937 gerador(rd()); // Gerador Mersenne Twister
-    std::uniform_int_distribution<> dist_binaria(0, 1); // Gera 0 ou 1 (50% de chance cada)
+    std::mt19937 gerador(rd()); // Gerador Mersenne Twister - gerador rápido e com boa distribuição
+
+    std::uniform_int_distribution<> dist_binaria(0, 1); // Retorna 0 ou 1 (50% de chance cada)
 
     // 3. Define quantas soluções aleatórias serão testadas
-    const int NUM_ITERACOES = 10000; // Pode ajustar conforme desempenho desejado
+    const int NUM_ITERACOES = 10000; // Pode ajustar para valor desejado, quanto maior, mais chance de encontrar melhores soluções
 
-    // 4. Loop principal — repete várias vezes para gerar diferentes mochilas aleatórias
+    // 4. Loop principal — repete várias vezes para gerar diferentes mochilas aleatórias e guarda a melhor
     for (int i = 0; i < NUM_ITERACOES; ++i) {
 
-        std::vector<Ativo> mochila_atual; // Guarda os ativos selecionados nesta iteração
-        int peso_total = 0;               // Soma dos pesos
-        int valor_total = 0;              // Soma dos valores
+        std::vector<Ativo> mochila_atual; // Guarda os ítens incuídos na mochila nesta iteração
+        int peso_total = 0;               // Soma dos pesos da mochila atual
+        int valor_total = 0;              // Soma dos valores da mcochila atual
 
         // 5. Gera uma solução aleatória
-        // Percorre todos os ativos e decide (aleatoriamente) se coloca ou não na mochila
+        // Percorre todos os ativos e decide aleatoriamente se coloca ou não na mochila
         for (const auto& ativo : ativos) {
 
-            // Se sair "1", tentamos adicionar o ativo
+            // Sorteia 0 ou 1, se sair "1", tentamos adicionar o ativo
             if (dist_binaria(gerador)) {
 
-                // Só adiciona se couber dentro da capacidade
+                // Verifica se o ativo cabe dentro da capacidade e só adiciona se couber dentro da capacidade restante da mochila atual
                 if (peso_total + ativo.peso <= capacidade) {
                     mochila_atual.push_back(ativo);
-                    peso_total += ativo.peso;
-                    valor_total += ativo.valor;
+                    peso_total += ativo.peso; // atualiza o peso total da mochila atual
+                    valor_total += ativo.valor; // atualiza o valor total da mochila atual
                 }
+                 // Se não couber na mochila atual, simplesmente ignora o ativo e segue para o próximo
             }
         }
 
-        // 6. Verifica se a solução atual é melhor que a melhor encontrada até agora
+        // 6. Verifica se a solução atual é melhor que a melhor encontrada até agora e se for, atualiza o resultado
         if (valor_total > melhor_resultado.valor_total) {
             melhor_resultado.valor_total = valor_total;
             melhor_resultado.peso_total = peso_total;
