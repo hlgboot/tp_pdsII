@@ -4,6 +4,8 @@
 
 Este é o repositório oficial para o desenvolvimento do Trabalho de Conclusão da Disciplina de **Programação e Desenvolvimento de Software II**.
 
+[Vídeo de compilação](https://youtu.be/xkRTN783ESs)
+
 **Descrição do Problema:**
 O problema de otimização de portfólio de investimento consiste em selecionar, entre um conjunto de ativos disponíveis, aqueles que devem compor uma carteira de investimentos de forma a maximizar o retorno esperado e, ao mesmo tempo, respeitar restrições de recursos (como o capital disponível, por exemplo). Essa seleção deve buscar o melhor equilíbrio possível entre risco e retorno, levando em conta que nem sempre é possível investir em todos os ativos desejados.
 Para simplificar e modelar o problema computacionalmente, o grupo fará uma analogia com o Problema da Mochila (Knapsack Problem), onde:
