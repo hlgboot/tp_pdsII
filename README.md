@@ -81,4 +81,29 @@ Geração de Instâncias: Cria 50 arquivos .txt de teste (instâncias pequenas e
 Processamento: Executa sequencialmente os 4 algoritmos (Força Bruta, Aleatório, Gulosos) em todas as instâncias.
 Saída: Exibe as informações de processamento no terminal e gera um arquivo de relatório (resultados.csv ou similar) com as métricas comparativas.
 
+---
+
+Arquitetura e Organização do Sistema
+O projeto é estruturado para separar claramente a interface pública (o que uma classe faz) da implementação da lógica (como ela faz).
+1. Pasta include/ (Interfaces e Contratos)
+Esta pasta contém todos os arquivos de cabeçalho (.hpp) e define as estruturas de dados e as interfaces que compõem o sistema.
+include/algorithms/ (Estratégias):
+Algoritmo.hpp: A Interface Abstrata. Define o contrato comum (resolver()) para Polimorfismo, permitindo que o controlador trate todos os algoritmos de forma uniforme.
+Classes Concretas (ForcaBruta.hpp, Aleatorio.hpp, etc.): Declararam a implementação da lógica específica de resolver().
+include/core/ (Estruturas de Dados):
+Ativo.hpp: Define o objeto que representa o item financeiro (Peso/Custo e Valor/Retorno Ajustado ao Risco).
+ResultadoUnitario.hpp: Define o objeto que armazena a solução de um algoritmo para uma única instância (valor total, tempo, etc.).
+include/managers/ e include/utils/:
+Define o contrato para o MainController (Orquestração) e funções auxiliares.
+2. Pasta src/ (Implementação da Lógica)
+Esta pasta contém o código-fonte (.cpp) que implementa o comportamento das classes declaradas no include/.
+src/MainController.cpp: O Orquestrador Central. Sua responsabilidade é medir o tempo (std::chrono), ler instâncias, executar todos os algoritmos e gerar o relatório final .csv.
+src/GeradorInstancias.cpp: Implementa a lógica para gerar os cenários de teste (instancia_xx.txt), calculando os atributos aleatórios e o Retorno Ajustado ao Risco de cada ativo.
+src/Aleatorio.cpp, src/ForcaBruta.cpp, src/Gulosos...: Implementam a lógica específica do método resolver() para cada uma das quatro estratégias de otimização.
+src/main.cpp: O ponto de partida do programa, que inicia o fluxo chamando o MainController.
+Outras Pastas Chave
+data/: Contém o arquivo de entrada inicial (ativos.csv) e os arquivos de instância gerados (instancia_xx.txt).
+build/: Diretório de destino para o executável gerado durante a compilação.
+
+
 
