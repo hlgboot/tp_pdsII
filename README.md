@@ -67,128 +67,43 @@ Os resultados serão organizados em uma tabela comparativa, permitindo discutir 
 * **Controle de versão** Git
 ---
 
-## 🚀 Como Começar (Guia para o grupo)
-
-Este guia vai te ensinar a baixar o projeto para sua máquina, fazer alterações e enviá-las de volta para o repositório de forma organizada.
-
-### Passo 0: Pré-requisitos
-
-Antes de tudo, você precisa ter o **Git** instalado no seu computador.
-* **Para instalar o Git:** Acesse [git-scm.com/downloads](https://git-scm.com/downloads) e baixe a versão para o seu sistema operacional. A instalação é simples, basta seguir o padrão "next, next, finish".
-
-### Passo 1: Clonar o Repositório
-
-"Clonar" significa fazer uma cópia do projeto que está no GitHub para o seu computador. Você só precisa fazer isso **uma vez**.
-
-1.  Abra o terminal (ou Git Bash no Windows).
-2.  Navegue até a pasta onde você quer salvar o projeto. Ex: `cd Documentos/ProjetosFaculdade`.
-3.  Execute o comando abaixo (copie a URL do botão verde "<> Code" no topo desta página):
-
-```bash
-git clone https://github.com/hlgboot/tp_pdsII/
-```
-
-Pronto! Agora você tem uma pasta com o nome do projeto no seu computador.
-
-### Passo 2: O Fluxo de Trabalho
-
-Para evitar conflitos e manter nosso trabalho organizado, vamos seguir este fluxo sempre que formos fazer uma nova alteração (uma nova funcionalidade, uma correção de bug, etc.).
-
-#### 1. Sincronize com o Repositório Principal
-
-Antes de começar a codificar, sempre puxe as últimas atualizações que alguém possa ter enviado. Isso evita conflitos.
-
-```bash
-# Entre na pasta do projeto
-cd tp_pdsII
-# Puxe as atualizações da branch principal (geralmente 'main' ou 'master')
-git pull origin main
-```
-
-#### 2. Crie uma Nova "Branch" (um Ramo) para sua Tarefa
-
-Nunca trabalhe diretamente na branch `main`. A `main` é o nosso código estável. Crie uma branch para a sua tarefa específica.
-
-Dê um nome descritivo para sua branch. Por exemplo:
-* Se for criar a tela de login: `feature/tela-login`
-* Se for corrigir um bug no cadastro: `fix/bug-cadastro`
-
-Use o comando:
-```bash
-# O comando -b já cria a branch e muda para ela
-git checkout -b nome-da-sua-branch
-```
-
-#### 3. Faça suas Alterações
-
-Agora sim! Abra o projeto no seu editor de código e faça toda a programação necessária para a sua tarefa. Salve os arquivos normalmente.
-
-#### 4. "Comite" suas Alterações
-
-Quando terminar (ou atingir um ponto importante), você precisa "salvar" suas alterações no Git. Isso é feito em dois passos:
-
-```bash
-# 1. Adiciona TODOS os arquivos que você modificou para a "área de preparação"
-git add .
-
-# 2. "Comita" os arquivos, adicionando uma mensagem clara sobre o que você fez
-git commit -m "feat: implementa funcionalidade de login de usuário"
-```
-> **Dica de mensagem de commit:** Seja claro e objetivo. Bons exemplos: `fix: corrige erro no cálculo do total`, `docs: atualiza o README com instruções`.
-
-#### 5. Envie sua Branch para o GitHub
-
-Agora que as alterações estão salvas localmente, envie sua branch para o repositório na nuvem (GitHub).
-
-```bash
-# A primeira vez que você envia a branch, pode precisar usar o comando mais longo
-git push --set-upstream origin nome-da-sua-branch
-
-# Nas próximas vezes na MESMA branch, pode usar apenas:
-git push
-```
-
-#### 6. Abra um "Pull Request" (PR)
-
-A última etapa! Vá para a página do nosso repositório no GitHub. Você verá uma notificação amarela com o nome da sua branch e um botão **"Compare & pull request"**.
-
-1.  Clique nesse botão.
-2.  Adicione um título e uma breve descrição do que você fez.
-3.  Na direita, em "Reviewers", marque os outros integrantes do grupo.
-4.  Clique em **"Create pull request"**.
-
-O "Pull Request" é um pedido para juntar (fazer o "merge") o seu código da sua branch na branch principal (`main`). Ele permite que o resto do grupo revise suas alterações antes que elas entrem na versão final do projeto.
+Como Compilar e Executar o Projeto
+O projeto utiliza um Makefile para automatizar a compilação de todos os módulos (.cpp) e a geração do executável final. O comando deve ser executado a partir da pasta raiz do projeto (tp_pdsII).
+1. Compilar o Projeto (Geração do Executável)
+Use o comando make para compilar todo o código e gerar o executável na pasta build/.
+make
+O que acontece: O Makefile executa o g++ com a flag -I./include para compilar todos os arquivos (.cpp) e cria o executável principal, geralmente nomeado como main ou tp_pdsII.
+2. Executar o Projeto (Rodar a Análise)
+Após a compilação, execute o binário gerado, que está na pasta build/.
+./build/main
+O que acontece: O programa irá iniciar o fluxo de análise:
+Geração de Instâncias: Cria 50 arquivos .txt de teste (instâncias pequenas e grandes).
+Processamento: Executa sequencialmente os 4 algoritmos (Força Bruta, Aleatório, Gulosos) em todas as instâncias.
+Saída: Exibe as informações de processamento no terminal e gera um arquivo de relatório (resultados.csv ou similar) com as métricas comparativas.
 
 ---
 
- ### 7: Finalizando uma Tarefa e Começando a Próxima
-    
-  Depois que seu "Pull Request" for aprovado e o código for incorporado à branch `main`, sua branch de funcionalidade (ex: `feature/tela-login`) já cumpriu seu papel. Você pode removê-la e começar uma nova tarefa.
-    
-  1.  **Volte para a branch principal (`main`):**
-    
-        ```bash
-        git checkout main
-        ```
-    
-  2.  **Sincronize novamente com o repositório:**
-        Isso garante que você tenha a versão mais atualizada do projeto, incluindo as alterações que você acabou de adicionar.
-    
-        ```bash
-        git pull origin main
-        ```
-    
-  3.  **(Opcional, mas recomendado) Apague a branch antiga:**
-        Para manter o repositório local limpo, você pode apagar a branch que não será mais usada.
-    
-        ```bash
-        git branch -d nome-da-sua-branch-antiga
-        ```
-    
-  4.  **Comece o ciclo novamente:**
-        Agora você está pronto para criar uma nova branch para sua próxima tarefa, a partir da `main` atualizada.
-    
-        ```bash
-        git checkout -b nome-da-nova-branch
-        ```
-    
+Arquitetura e Organização do Sistema
+O projeto é estruturado para separar claramente a interface pública (o que uma classe faz) da implementação da lógica (como ela faz).
+1. Pasta include/ (Interfaces e Contratos)
+Esta pasta contém todos os arquivos de cabeçalho (.hpp) e define as estruturas de dados e as interfaces que compõem o sistema.
+include/algorithms/ (Estratégias):
+Algoritmo.hpp: A Interface Abstrata. Define o contrato comum (resolver()) para Polimorfismo, permitindo que o controlador trate todos os algoritmos de forma uniforme.
+Classes Concretas (ForcaBruta.hpp, Aleatorio.hpp, etc.): Declararam a implementação da lógica específica de resolver().
+include/core/ (Estruturas de Dados):
+Ativo.hpp: Define o objeto que representa o item financeiro (Peso/Custo e Valor/Retorno Ajustado ao Risco).
+ResultadoUnitario.hpp: Define o objeto que armazena a solução de um algoritmo para uma única instância (valor total, tempo, etc.).
+include/managers/ e include/utils/:
+Define o contrato para o MainController (Orquestração) e funções auxiliares.
+2. Pasta src/ (Implementação da Lógica)
+Esta pasta contém o código-fonte (.cpp) que implementa o comportamento das classes declaradas no include/.
+src/MainController.cpp: O Orquestrador Central. Sua responsabilidade é medir o tempo (std::chrono), ler instâncias, executar todos os algoritmos e gerar o relatório final .csv.
+src/GeradorInstancias.cpp: Implementa a lógica para gerar os cenários de teste (instancia_xx.txt), calculando os atributos aleatórios e o Retorno Ajustado ao Risco de cada ativo.
+src/Aleatorio.cpp, src/ForcaBruta.cpp, src/Gulosos...: Implementam a lógica específica do método resolver() para cada uma das quatro estratégias de otimização.
+src/main.cpp: O ponto de partida do programa, que inicia o fluxo chamando o MainController.
+Outras Pastas Chave
+data/: Contém o arquivo de entrada inicial (ativos.csv) e os arquivos de instância gerados (instancia_xx.txt).
+build/: Diretório de destino para o executável gerado durante a compilação.
+
+
+
