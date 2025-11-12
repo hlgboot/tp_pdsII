@@ -67,3 +67,18 @@ Os resultados serão organizados em uma tabela comparativa, permitindo discutir 
 * **Controle de versão** Git
 ---
 
+Como Compilar e Executar o Projeto
+O projeto utiliza um Makefile para automatizar a compilação de todos os módulos (.cpp) e a geração do executável final. O comando deve ser executado a partir da pasta raiz do projeto (tp_pdsII).
+1. Compilar o Projeto (Geração do Executável)
+Use o comando make para compilar todo o código e gerar o executável na pasta build/.
+make
+O que acontece: O Makefile executa o g++ com a flag -I./include para compilar todos os arquivos (.cpp) e cria o executável principal, geralmente nomeado como main ou tp_pdsII.
+2. Executar o Projeto (Rodar a Análise)
+Após a compilação, execute o binário gerado, que está na pasta build/.
+./build/main
+O que acontece: O programa irá iniciar o fluxo de análise:
+Geração de Instâncias: Cria 50 arquivos .txt de teste (instâncias pequenas e grandes).
+Processamento: Executa sequencialmente os 4 algoritmos (Força Bruta, Aleatório, Gulosos) em todas as instâncias.
+Saída: Exibe as informações de processamento no terminal e gera um arquivo de relatório (resultados.csv ou similar) com as métricas comparativas.
+
+
