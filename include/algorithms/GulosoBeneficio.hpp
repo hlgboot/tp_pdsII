@@ -1,8 +1,20 @@
+/**
+ * @file GulosoBeneficio.hpp
+ * @brief Define a classe do algoritmo Guloso por Benefício.
+ */
 #ifndef GULOSO_BENEFICIO_H
 #define GULOSO_BENEFICIO_H
 
 #include "Algoritmo.hpp"
 
+/**
+ * @class GulosoBeneficio
+ * @brief Implementa a heurística Gulosa por Benefício (maior Sharpe).
+ *
+ * Esta estratégia seleciona primeiro os ativos com o maior benefício
+ * (Índice de Sharpe) [cite_start]individual, sem considerar seu custo (preço)[cite: 104].
+ * É rápido, mas pode não ser eficiente no uso do capital.
+ */
 class GulosoBeneficio : public Algoritmo {
 public:
     /**

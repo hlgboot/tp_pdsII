@@ -1,8 +1,20 @@
+/**
+ * @file GulosoRazao.hpp
+ * @brief Define a classe do algoritmo Guloso por Razão (Custo-Benefício).
+ */
 #ifndef GULOSO_RAZAO_H
 #define GULOSO_RAZAO_H
 
 #include "Algoritmo.hpp"
 
+/**
+ * @class GulosoRazao
+ * @brief Implementa a heurística Gulosa por Razão (Sharpe/Preço).
+ *
+ * Esta é uma estratégia avançada que seleciona primeiro os ativos com o
+ * melhor "custo-benefício" (relação Benefício/Peso).
+ * Otimiza o uso do capital, gerando soluções de alta qualidade.
+ */
 class GulosoRazao : public Algoritmo {
 public:
     /**

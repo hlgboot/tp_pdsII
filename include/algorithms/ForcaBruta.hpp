@@ -1,8 +1,20 @@
+/**
+ * @file ForcaBruta.hpp
+ * @brief Define a classe do algoritmo de Força Bruta (solução ótima).
+ */
 #ifndef FORCA_BRUTA_H
 #define FORCA_BRUTA_H
 
 #include "Algoritmo.hpp"
 
+/**
+ * @class ForcaBruta
+ * @brief Implementa a solução ótima (Exata) via Força Bruta.
+ *
+ * Encontra a solução perfeita testando todas as 2^n combinações possíveis
+ * de ativos usando uma abordagem recursiva (backtracking).
+ * É usado como 'baseline' para medir a qualidade das outras heurísticas.
+ */
 class ForcaBruta : public Algoritmo {
 public:
     /**
