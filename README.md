@@ -69,6 +69,30 @@ O projeto **não** implementa a Otimização de Portfólio de Markowitz (com cor
 
 ---
 
+## Arquitetura e Organização do Sistema
+O projeto segue boas práticas de Programação Orientada a Objetos (POO), separando interfaces (include/) e implementações (src/).
+
+![alt text](image.png)
+
+## Programação Defensiva
+
+O sistema foi desenvolvido com foco em robustez e tolerância a falhas.
+
+🔸 Tratamento de Exceções Fatais
+- Toda a execução (main.cpp) é encapsulada em try-catch.
+- Se o arquivo data/ativos.csv estiver ausente ou vazio, é lançada uma std::runtime_error, tratada com mensagem clara ao usuário.
+
+🔸 Tratamento de Erros Não-Fatais
+- O método MainController::executar possui try-catch interno.
+- Caso um arquivo instancia_xx.txt esteja corrompido, o erro é reportado em std::cerr, e o sistema prossegue com as demais instâncias.
+
+🔸 Checagens de Lógica
+- Utils::calcularIndiceSharpe → impede divisão por zero.
+- Utils::calcularProximidade → impede divisão por zero.
+- GulosoRazao::resolver → trata ativos com preço zero.
+
+---
+
 ## Compilação e Execução
 O projeto utiliza um Makefile automático para gerenciar a compilação.
 
@@ -116,7 +140,15 @@ Toda a documentação técnica da API do código-fonte é gerada automaticamente
 
 ---
 
-## **Resultados**
+## Instruções de Uso (Entradas e Saídas)
+
+* Entrada Principal: O arquivo data/ativos.csv. Este arquivo deve conter a lista de nomes de ativos (um por linha) que será usada pelo gerador de instâncias.
+* Entrada Gerada: O GeradorInstancias usa o ativos.csv para criar os 50 arquivos data/instancia_xx.txt.
+* Saída Final: O programa gera o arquivo results/relatorio_final.csv, que contém as métricas de desempenho de todos os algoritmos para todas as instâncias.
+
+---
+
+## Resultados
 
 A análise do desempenho dos algoritmos foi realizada em 50 instâncias (25 pequenas para validar a qualidade e 25 grandes para medir a escalabilidade), comparando o Tempo de Execução e a Qualidade da Solução (Retorno Ajustado ao Risco obtido).
 
@@ -150,7 +182,7 @@ B. Performance de Execução
 - Gulosos (Razão e Benefício): Foram extremamente rápidos, executando em torno de 0.028 ms.
 
 
-## **Conclusão dos Resultados**
+## Conclusão dos Resultados
 O Algoritmo Guloso por Razão se destaca como a solução mais eficiente e de maior qualidade para o Problema da Mochila aplicado à otimização de portfólio. Ele oferece um resultado quase ótimo em tempo mínimo, provando ser o algoritmo ideal para cenários reais e de maior escala.
 
 
@@ -173,15 +205,3 @@ O projeto de otimização em C++ reforçou lições fundamentais da disciplina, 
 **3. Lições de Colaboração e Processo**
 - Controle de Versão: O uso obrigatório de Pull Requests (PRs) e branches no Git foi crucial para manter a integridade do código, permitindo que a contribuição de cada membro fosse revisada e        integrada de forma controlada.
 - Programação Defensiva: A implementação de checagens rigorosas (como a restrição de capacidade da mochila) garantiu que o sistema fosse estável e produzisse apenas soluções válidas.
-
----
-
-## **Arquitetura e Organização do Sistema**
-
-
-
-
-
-
-
-
