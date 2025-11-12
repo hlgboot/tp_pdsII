@@ -67,7 +67,7 @@ Os resultados serão organizados em uma tabela comparativa, permitindo discutir 
 * **Controle de versão** Git
 ---
 
-Como Compilar e Executar o Projeto
+**Como Compilar e Executar o Projeto**
 O projeto utiliza um Makefile para automatizar a compilação de todos os módulos (.cpp) e a geração do executável final. O comando deve ser executado a partir da pasta raiz do projeto (tp_pdsII).
 1. Compilar o Projeto (Geração do Executável)
 Use o comando make para compilar todo o código e gerar o executável na pasta build/.
