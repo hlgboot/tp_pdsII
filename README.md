@@ -1,12 +1,12 @@
 # Trabalho de conclusão da disciplina Programação e Desenvolvimento de Software II
 
-## Sobre o Projeto
+## 📖 Sobre o Projeto
 
 Este é o repositório oficial para o desenvolvimento do Trabalho de Conclusão da Disciplina de **Programação e Desenvolvimento de Software II**.
 
 [Vídeo de compilação](https://youtu.be/xkRTN783ESs)
 
-## Integrantes do Grupo
+## 👥 Integrantes do Grupo
 
 * Matheus Henriques
 * Pedro Costa
@@ -15,10 +15,11 @@ Este é o repositório oficial para o desenvolvimento do Trabalho de Conclusão 
 
 ---
 
-## Tecnologias Utilizadas
+## 🛠️ Tecnologias Utilizadas
 
 * **Linguagem:** C++
 * **Controle de versão** Git
+* **Documentação** Doxygen
 ---
 
 ## **Contexto: Otimização de Portfólio**
@@ -33,26 +34,19 @@ Neste modelo, os elementos do investimento são mapeados da seguinte forma:
 - O Capital Total Disponível representa a Capacidade Máxima da Mochila.
 - Cada Ativo de investimento representa um Item.
 - O Custo do Investimento em cada ativo representa o Peso do item.
-- O Benefício de cada item é o Retorno Ajustado ao Risco (o ganho que compensa a exposição ao risco).
+- O Benefício de cada item é o Índice de Sharpe ou Retorno Ajustado ao Risco (o ganho que compensa a exposição ao risco).
 Assim, o objetivo principal é determinar a composição do portfólio que maximize o Retorno Ajustado ao Risco total sem ultrapassar o orçamento disponível.
 
 ## **Objetivos do Projeto**
 
 O projeto visa atingir três metas principais:
-Implementar e Comparar diferentes algoritmos para resolver o problema da mochila aplicado à otimização de portfólio de investimentos.
+Implementar e comparar diferentes algoritmos para resolver o problema da mochila aplicado à otimização de portfólio de investimentos.
 - Avaliar o Desempenho de cada abordagem, analisando o tempo de execução e a qualidade da solução obtida.
 - Determinar qual dos algoritmos fornece o melhor equilíbrio entre qualidade da solução e eficiência computacional.
-- Algoritmos Implementados
-- O sistema conta com quatro estratégias de solução:
-- Algoritmo Exato (Força Bruta): Testa todas as combinações possíveis de ativos, garantindo a solução ótima (a melhor possível), mas com alto custo computacional.
-- Algoritmo Aleatório: Gera um grande número de subconjuntos aleatórios que respeitam o limite de capital e seleciona o melhor encontrado. Serve como base de comparação de velocidade.
-- Algoritmos Gulosos:
-- Guloso 1 (por Benefício): Seleciona os ativos que oferecem o maior benefício individual (retorno) primeiro.
-- Guloso 2 (por Razão): Seleciona os ativos com a melhor relação benefício/peso (retorno/custo), sendo mais eficaz na alocação de capital.
 
 ## **Metodologia**
 
-Os algoritmos foram aplicados a um conjunto de aproximadamente 100 ativos simulados, cada um com valores de custo e retorno definidos.
+Os algoritmos foram aplicados a conjuntos de 30 (Instâncias pequenas) e 100 (Instâncias grandes) ativos simulados, cada um com valores de custo e retorno definidos.
 Foram coletadas e comparadas as seguintes métricas:
 - Tempo de execução de cada algoritmo.
 - Valor total de retorno obtido por cada solução.
@@ -60,11 +54,52 @@ Foram coletadas e comparadas as seguintes métricas:
 
 Os resultados foram organizados em uma tabela comparativa, permitindo a análise aprofundada da eficácia e eficiência de cada metodologia.
 
+### Funcionalidades Entregues
+* **Geração de Instâncias:** Um sistema robusto (`GeradorInstancias`) que cria 50 cenários de teste (`.txt`), divididos em 25 instâncias pequenas (para análise de qualidade) e 25 grandes (para análise de performance). O benefício de cada ativo é calculado usando o Índice de Sharpe.
+* **Implementação de 4 Algoritmos:**
+    1.  **Força Bruta:** Solução ótima (recursiva) que testa todas as 2^n combinações.
+    2.  **Aleatório (Monte Carlo):** Heurística que gera 10.000 soluções aleatórias e guarda a melhor.
+    3.  **Guloso por Benefício:** Heurística que prioriza os ativos com maior Índice de Sharpe.
+    4.  **Guloso por Razão:** Heurística avançada que prioriza a razão `Sharpe / Preço`.
+* **Orquestrador de Análise:** Um `MainController` que gerencia o fluxo, executa os algoritmos (usando Polimorfismo), mede o tempo com `std::chrono` e gera o relatório.
+* **Geração de Relatório:** Geração automática de um arquivo `relatorio_final.csv` com todas as métricas para análise.
 
+### Itens Fora do Escopo
+O projeto **não** implementa a Otimização de Portfólio de Markowitz (com correlação entre ativos). A analogia da mochila assume que o benefício de cada ativo é **independente**, o que é uma simplificação necessária para permitir a comparação dos algoritmos gulosos com a solução ótima.
 
 ---
 
-## Documentação (Doxygen)
+## Compilação e Execução
+O projeto utiliza um Makefile automático para gerenciar a compilação.
+
+### Pré-requisitos
+
+1. Um compilador C++14 ou superior (ex: `g++`).
+2. `make`
+
+### Compilação
+
+1. Na raiz do projeto, para limpar compilações anteriores, execute o comando:
+    ```bash
+    make clean
+    ```
+2. Ainda na raiz, para compilar o programa, execute o comando:
+    ```bash
+    make
+    ```
+
+### Execução
+1. Na raiz do projeto, para rodar a aplicação, execute o comando:
+    ```bash
+    make run
+    ```
+O programa:
+1. Gera 50 arquivos .txt (25 pequenos, 25 grandes) em data/
+2. Processa todas as instâncias, exibindo o progresso no console
+3. Gera o relatório results/relatorio_final.csv
+---
+
+## 📖 Documentação (Doxygen)
 
 Toda a documentação técnica da API do código-fonte é gerada automaticamente pelo Doxygen.
 
@@ -79,7 +114,6 @@ Toda a documentação técnica da API do código-fonte é gerada automaticamente
 3.  A documentação completa será gerada na pasta `docs/doxygen/html/`.
 4.  Abra o arquivo `docs/doxygen/html/index.html` no seu navegador para consultar.
 
----
 ---
 
 ## **Resultados**
@@ -147,24 +181,6 @@ O projeto de otimização em C++ reforçou lições fundamentais da disciplina, 
 
 
 
-
----
-
-**Como Compilar e Executar o Projeto**
-O projeto utiliza um Makefile para automatizar a compilação de todos os módulos (.cpp) e a geração do executável final. O comando deve ser executado a partir da pasta raiz do projeto (tp_pdsII).
-1. Compilar o Projeto (Geração do Executável)
-Use o comando make para compilar todo o código e gerar o executável na pasta build/.
-make
-O que acontece: O Makefile executa o g++ com a flag -I./include para compilar todos os arquivos (.cpp) e cria o executável principal, geralmente nomeado como main ou tp_pdsII.
-2. Executar o Projeto (Rodar a Análise)
-Após a compilação, execute o binário gerado, que está na pasta build/.
-./build/main
-O que acontece: O programa irá iniciar o fluxo de análise:
-Geração de Instâncias: Cria 50 arquivos .txt de teste (instâncias pequenas e grandes).
-Processamento: Executa sequencialmente os 4 algoritmos (Força Bruta, Aleatório, Gulosos) em todas as instâncias.
-Saída: Exibe as informações de processamento no terminal e gera um arquivo de relatório (resultados.csv ou similar) com as métricas comparativas.
-
----
 
 
 
