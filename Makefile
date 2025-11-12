@@ -39,12 +39,13 @@ $(BINDIR):
 $(BUILDDIR):
 	@mkdir -p $(BUILDDIR)
 
-# --- Regra de Compilação Genérica ---
-
-# Esta ÚNICA regra substitui TODAS as suas regras manuais.
-# Ela ensina ao 'make' como transformar qualquer 'src/%.cpp' em um 'build/%.o'
+# --- Regra de Compilação ---
 $(BUILDDIR)/%.o: $(SRCDIR)/%.cpp
 	$(CXX) $(CXXFLAGS) -c $< -o $@
+
+# --- Regra de Execução (Requisito E8a) ---
+run: all
+	./$(TARGET)
 
 # --- Regra de Limpeza ---
 clean:
@@ -55,15 +56,13 @@ clean:
 	@rmdir $(BINDIR) 2>/dev/null || true
 	@rmdir $(BUILDDIR) 2>/dev/null || true
 
-# Evita que 'make' se confunda com arquivos chamados 'all' ou 'clean'
-.PHONY: all clean
-
 # --- Regra de geracao do Doxygen ---
 docs:
 	@mkdir -p docs/doxygen
 	doxygen Doxyfile
 
-.PHONY: docs
+# Evita que 'make' se confunda com arquivos chamados 'all' 'clean' 'run' 'docs' 
+.PHONY: all clean docs run
 
 # Inclui os arquivos de dependência (.d) gerados automaticamente
 # Isso garante que um .cpp será recompilado se um .h que ele usa for modificado
