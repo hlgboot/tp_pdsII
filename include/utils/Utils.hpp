@@ -1,9 +1,17 @@
+/**
+ * @file Utils.hpp
+ * @brief Declaração de funções utilitárias globais para o projeto.
+ */
 #ifndef UTILS_H
 #define UTILS_H
 
 #include <string>
 #include <vector>
 
+/**
+ * @namespace Utils
+ * @brief Agrupa funções auxiliares, puras e sem estado.
+ */
 namespace Utils {
 
     /**
