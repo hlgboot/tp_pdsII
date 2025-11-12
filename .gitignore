@@ -9,3 +9,6 @@ results/
 
 # Arquivos de instâncias .txt gerados na pasta data
 data/*.txt
+
+# Documentação auto-gerada
+docs/doxygen/

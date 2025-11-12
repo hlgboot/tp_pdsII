@@ -58,6 +58,13 @@ clean:
 # Evita que 'make' se confunda com arquivos chamados 'all' ou 'clean'
 .PHONY: all clean
 
+# --- Regra de geracao do Doxygen ---
+docs:
+	@mkdir -p docs/doxygen
+	doxygen Doxyfile
+
+.PHONY: docs
+
 # Inclui os arquivos de dependência (.d) gerados automaticamente
 # Isso garante que um .cpp será recompilado se um .h que ele usa for modificado
 -include $(DEPS)
