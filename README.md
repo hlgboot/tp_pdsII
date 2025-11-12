@@ -83,6 +83,23 @@ Saída: Exibe as informações de processamento no terminal e gera um arquivo de
 
 ---
 
+## 📖 Documentação (Doxygen)
+
+Toda a documentação técnica da API do código-fonte é gerada automaticamente pelo Doxygen.
+
+### Como Gerar
+
+1.  Certifique-se de que você tem o [Doxygen](https://www.doxygen.nl/) instalado.
+2.  Na raiz do projeto, execute o comando:
+    ```bash
+    doxygen
+    ```
+    (Ou, alternativamente, rode `make docs`).
+3.  A documentação completa será gerada na pasta `docs/doxygen/html/`.
+4.  Abra o arquivo `docs/doxygen/html/index.html` no seu navegador para consultar.
+
+---
+
 Arquitetura e Organização do Sistema
 O projeto é estruturado para separar claramente a interface pública (o que uma classe faz) da implementação da lógica (como ela faz).
 1. Pasta include/ (Interfaces e Contratos)
